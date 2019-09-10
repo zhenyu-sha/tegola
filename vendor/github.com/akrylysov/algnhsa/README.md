@@ -26,9 +26,17 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "%d", f+s)
 }
 
+func contextHandler(w http.ResponseWriter, r *http.Request) {
+    proxyReq, ok := algnhsa.ProxyRequestFromContext(r.Context())
+    if ok {
+        fmt.Fprint(w, proxyReq.RequestContext.AccountID)
+    }
+}
+
 func main() {
     http.HandleFunc("/", indexHandler)
     http.HandleFunc("/add", addHandler)
+    http.HandleFunc("/context", contextHandler)
     algnhsa.ListenAndServe(http.DefaultServeMux, nil)
 }
 ```
@@ -55,3 +63,9 @@ func main() {
 ```
 
 More details at http://artem.krylysov.com/blog/2018/01/18/porting-go-web-applications-to-aws-lambda/.
+
+Note: algnhsa requires [aws-lambda-go](https://github.com/aws/aws-lambda-go) version 1.8.1 or higher:
+
+```sh
+go get -u github.com/aws/aws-lambda-go/events
+```
