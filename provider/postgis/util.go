@@ -202,7 +202,6 @@ func decipherFields(ctx context.Context, geomFieldname, idFieldname string, desc
 		}
 
 		desc := descriptions[i]
-		// the id has to be parsed once but it can also be a tag
 
 		switch desc.Name {
 		case geomFieldname:
